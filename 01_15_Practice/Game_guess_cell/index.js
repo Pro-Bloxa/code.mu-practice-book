@@ -19,17 +19,22 @@ for(let i = 0; i <= tds1.length; i++) {
 }
 
 table1.addEventListener('click', function(event) {
-
-    if(arrCells.includes(event.target) && counter !==11) {
+    let cell = event.target.closest('td');
+    if(cell === null || cell === undefined) {
+        return result1.textContent;
+    }
+    if(arrCells.includes(cell) && counter !==11) {
+        let i = arrCells.indexOf(cell);
+        arrCells.splice(i, 1);
         counter++;
-        event.target.classList.add('active');
+        cell.classList.add('active');
         result1.textContent = 'Вы угадали ячейку ' + counter;
         if(counter === 10) {
             result1.textContent = 'Вы угадали 10 ячеек';
             alert('Вы победили!');
         }
     } else {
-        event.target.textContent = 'X';
+        cell.textContent = 'X';
     }
 });
 
@@ -51,6 +56,10 @@ for(let i = 0; i <= tds2.length; i++) {
 }
 
 table2.addEventListener('click', function startGame(event) {
+    let cell = event.target.closest('td');
+    if(cell === null || cell === undefined) {
+        return result1.textContent;
+    }
     let timerId = +timer.textContent;
 
     let timerInterval = setInterval(function() {
@@ -68,14 +77,16 @@ table2.addEventListener('click', function startGame(event) {
     }, 1000);
 
     if(arrCells2.includes(event.target) && counter2 !==11) {
+        let i = arrCells2.indexOf(cell);
+        arrCells2.splice(i, 1);
         counter2++;
-        event.target.classList.add('active');
+        cell.classList.add('active');
         result2.textContent = 'Вы угадали ячейку ' + counter2;
         if(counter2 === 10) {
             result2.textContent = 'Вы угадали 10 ячеек';
             table2.removeEventListener('click', startGame);
         }
     } else {
-        event.target.textContent = 'X';
+        cell.textContent = 'X';
     }
 });
