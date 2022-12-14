@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <section class="horoscope">
+    <div id="parent">
+      <h1>Гороскоп на JavaScript</h1>
+      <form>
+        Выберите день прогноза:
+        <label>
+          <input type="radio" name="date" class="today">
+          Прогноз на сегодня
+        </label>
+        <label>
+          <input type="radio" name="date" class="tomorrow">
+          Прогноз на завтра
+        </label>
+        <label>
+          <input type="radio" name="date" class="after-tomorrow">
+          Прогноз на послезавтра
+        </label>
+      </form>
+      <p>Введите дату рождения в формате 21.03.1998</p>
+      <input id="input" placeholder="введите дату рождения и нажмите Enter">
+
+      <p class="you-sign"></p>
+      <p class="description"></p>
+    </div>
+  </section>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
