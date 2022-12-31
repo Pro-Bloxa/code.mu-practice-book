@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <section class="Notebook">
+    <h1>Записная книжка на JavaScript</h1>
+    <div id="wrapper">
+      <div id="menu">
+        <ul id="notes">
+          <!-- <li>запись 1</li>
+          <li>запись 2</li>
+          <li>запись 3</li> -->
+        </ul>
+        <div id="create">
+          <button>Новая запись / Редактирование</button>
+        </div>
+        <div class="text-remove"></div>
+      </div>
+      <div id="text">
+        <textarea></textarea>
+        <button data-mode="create">Сохранить</button>
+        <div class="change-mode">Режим создания новой записи</div>
+      </div>
+    </div>
+  </section>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
