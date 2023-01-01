@@ -7,88 +7,81 @@
 const textarea = document.querySelector('textarea');
 const btnSave = document.querySelector('#text button');
 const btnChangeMode = document.querySelector('#create button');
-const notes = document.querySelector('#notes');
+const notes = document.getElementById('notes');
 const changeMode = document.querySelector('.change-mode');
-
-let textRemove = document.querySelector('.text-remove');
 
 let texts = [];
 
 btnSave.addEventListener('click', function(event) {
-
     if(this.dataset.mode == 'create') {
         texts.push(textarea.value);
         let elemLi = document.createElement('li');
-
         let span1 = document.createElement('span');
         let span2 = document.createElement('span');
 
-        let num = texts.length;
+        let num;
+        if(notes.getElementsByTagName('li').length === 0) {
+            num = 1;
+        }
+        if(notes.getElementsByTagName('li').length > 0) {
+            num = +notes.lastElementChild.getAttribute('data-key') + 1;
+        }
 
         span1.classList.add('open');
         span2.classList.add('remove');
-        span1.innerHTML = "Запись " + num;
-        span2.innerHTML = "  X";
+        span1.textContent = "Запись " + num;
+        span2.textContent = "   X";
         elemLi.appendChild(span1);
         elemLi.appendChild(span2);
-
-
-        span1.setAttribute('data-key', num);
-        
-        span1.addEventListener('click', (event) => {
-
-            let spanActive = notes.querySelector('span.active');
-            
-            let current = num - 1;
-            textarea.value = texts[current];
-
-            event.target.classList.add('active');
-            if(spanActive) {
-                spanActive.classList.remove('active');
-            }
-            textarea.focus();
-            this.dataset.mode = 'update';
-            changeMode.textContent = 'Режим редактирования';
-        });
-
+        elemLi.setAttribute('data-key', num);
         notes.appendChild(elemLi);
         textarea.value = '';
         textarea.focus();
     }
 
-    let spansRemove = Array.from(notes.querySelectorAll('.remove'));
-    
-    spansRemove.forEach(item => {
-        item.addEventListener('click', (event) => {
-            let li = event.target.parentElement;
-            let index = li.firstElementChild.getAttribute('data-key');
-            console.log(index);
-            li.remove(); 
-            texts.splice(index - 1, 1); // удаляются все элементы ниже удаляемого
+    let spansOpen = Array.from(notes.getElementsByClassName('open'));
+    let spansRemove = Array.from(notes.getElementsByClassName('remove'));
+
+    spansOpen.forEach(item => {
+        item.addEventListener('click', function () {
+            let spanActive = document.querySelector('span.active');
+            if(spanActive) {
+                spanActive.classList.remove('active');
+            }
+
+            this.classList.add('active');
+            let indexCurrent = spansOpen.indexOf(this);
+            textarea.value = texts[indexCurrent];
+            textarea.focus();
+            btnSave.dataset.mode = 'update';
+            changeMode.textContent = 'Режим редактирования';
         });
     });
 
     if(this.dataset.mode == 'update') {
-
-        let spans = Array.from(notes.querySelectorAll('.open'));
-        
-        let index;
-
-        spans.forEach(item => {
+        spansOpen.forEach(item => { 
+            let index;
             if(item.matches('span.active')) {
-                index = item.dataset.key; 
+                index = spansOpen.indexOf(item);
+                texts[index] = textarea.value;
+                textarea.value = ''; 
+                btnSave.dataset.mode = 'create';
+                changeMode.textContent = 'Режим создания новой записи';
             }
         });
-        texts[index - 1] = textarea.value;
-        textarea.value = ''; 
-        
-        this.dataset.mode = 'create';
-        changeMode.textContent = 'Режим создания новой записи';
     }
- });
+
+    spansRemove.forEach(item => {
+        item.addEventListener('click', function() {
+            let indexRemove = spansRemove.indexOf(this);
+            this.parentElement.remove();
+            texts.splice(indexRemove, 1); // удаляются все элементы ниже удаляемого
+        });
+    });
+});
 
 btnChangeMode.addEventListener('click', function() {
-    if(btnSave.dataset.mode == 'create'){
+    if(btnSave.dataset.mode == 'create') {
         btnSave.dataset.mode = 'update';
         changeMode.textContent = 'Режим редактирования';
     } else if(btnSave.dataset.mode == 'update') {
